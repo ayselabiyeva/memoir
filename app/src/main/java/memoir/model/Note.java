@@ -6,7 +6,7 @@ public class Note {
     private String title;
     private String content;
     private LocalDateTime createdAt;
-    private LocalDateTime createdBy;
+    private String createdBy;
 
     public Note(int id, String title, String content, LocalDateTime createdAt, LocalDateTime createdBy) {
         this.id = id;
@@ -17,11 +17,7 @@ public class Note {
     }
 
     public Note(int id, String title, LocalDateTime createdAt, LocalDateTime createdBy) {
-        this.id = id;
-        this.title = title;
-        this.createdAt = createdAt;
-        this.createdBy = createdBy;
-        this.content = "";
+        
     }
 
     public int getId() {
