@@ -16,10 +16,6 @@ public class Note {
         this.createdBy = createdBy;
     }
 
-    public Note(int id, String title, LocalDateTime createdAt, LocalDateTime createdBy) {
-        
-    }
-
     public int getId() {
         return id;
     }
