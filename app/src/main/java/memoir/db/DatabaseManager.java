@@ -1,5 +1,7 @@
 package memoir.db;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -12,23 +14,22 @@ public class DatabaseManager {
     }
 
     public static void initializeDatabase() {
-        String schemaPath = "db/schema.sql";
-
         try (Connection connection = getConnection();
-             Statement statement = connection.createStatement()) {
+             Statement statement = connection.createStatement();
+             InputStream input = DatabaseManager.class
+                     .getClassLoader()
+                     .getResourceAsStream("schema.sql")) {
 
-            java.nio.file.Path path = java.nio.file.Paths.get(schemaPath);
-
-            if (!java.nio.file.Files.exists(path)) {
-                System.err.println("Error: schema.sql couldn't be found under: " + path.toAbsolutePath());
+            if (input == null) {
+                System.err.println("Error: schema.sql not found in resources.");
                 return;
             }
 
-            String sql = java.nio.file.Files.readString(path);
+            String sql = new String(input.readAllBytes(), StandardCharsets.UTF_8);
 
             if (!sql.trim().isEmpty()) {
                 statement.executeUpdate(sql);
-                System.out.println("SQL Database is ready!");
+                System.out.println("Database is ready!");
             }
 
         } catch (Exception e) {
@@ -37,4 +38,3 @@ public class DatabaseManager {
         }
     }
 }
-
