@@ -23,8 +23,6 @@ public class App {
         return "Hello";
     }
 
-
-  
     public static void main(String[] args) {
         connectDB();
 
@@ -40,7 +38,7 @@ public class App {
         System.out.print("Enter note content: ");
         String content = scanner.nextLine();
 
-        System.out.print("Enter name who writes note?: ");
+        System.out.print("Enter name who writes the note?: ");
         String creator = scanner.nextLine();
 
         LocalDateTime now = LocalDateTime.now();
