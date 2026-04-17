@@ -3,40 +3,121 @@ package memoir;
 import memoir.db.DatabaseManager;
 import memoir.model.Note;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 
 public class App {
+  
+    static Scanner scanner = new Scanner(System.in);
+    static Map<String, String> notes = new HashMap<>();
 
     public static void main(String[] args) {
+      
         DatabaseManager.initializeDatabase();
+        boolean running = true;
+        while (running) {
+            showMenu();
+            String choice = scanner.nextLine();
 
-        Scanner scanner = new Scanner(System.in);
+            switch (choice) {
+                case "1":
+                    printNotes();
+                    break;
+                case "2":
+                    searchNote();
+                    break;
+                case "3":
+                    addNote();
+                    break;
+                case "4":
+                    deleteNote();
+                    break;
+                case "5":
+                    modifyNote();
+                    break;
+                case "6":
+                    System.out.println("Exiting...");
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+      scanner.close(); 
+    } 
 
-        System.out.print("Enter note title: ");
-        String title = scanner.nextLine();
+    static void showMenu() {
+        System.out.println("1. Print all notes");
+        System.out.println("2. Search note");
+        System.out.println("3. Add note");
+        System.out.println("4. Delete note");
+        System.out.println("5. Modify note");
+        System.out.println("6. Exit");
+        System.out.print("Choose option: ");
+    }
+
+    static void printNotes() {
+        if (notes.isEmpty()) {
+            System.out.println("No notes available.");
+            return;
+        }
+
+        for (String title : notes.keySet()) {
+            System.out.println("Title: " + title);
+            System.out.println("Content: " + notes.get(title));
+        }
+    }
+
+    static void searchNote() {
+        System.out.print("Enter note id: ");
+        int id = scanner.nextInt();
+
+        if (notes.containsKey(name)) {
+            System.out.println("Content: " + notes.get(name));
+        } else {
+            System.out.println("Error: No results found");
+        }
+    }
+
+    static void addNote() {
+        System.out.print("Enter note id: ");
+        int id = scanner.nextInt();
 
         System.out.print("Enter note content: ");
         String content = scanner.nextLine();
 
-        System.out.print("Enter the name of creator: ");
-        String creator = scanner.nextLine();
+        notes.put(name, content);
+        System.out.println("Note saved.");
+    }
 
-        LocalDateTime now = LocalDateTime.now();
+    static void deleteNote() {
+        System.out.print("Enter note id to delete: ");
+         int id = scanner.nextInt();
 
-        Note newNote = new Note(title, content, now, creator);
-        DatabaseManager.insertNote(newNote);
+        if (notes.containsKey(name)) {
+            notes.remove(name);
+            System.out.println("Note deleted.");
+        } else {
+            System.out.println("Error: Note not found");
+        }
+    }
 
-        List<Note> allNotes = DatabaseManager.getAllNotes();
-        Note lastNnote = allNotes.getLast();
+    static void modifyNote() {
+        System.out.print("Enter note id to modify: ");
+         int id = scanner.nextInt();
 
-        System.out.println("\nCreated note:");
-        System.out.println(lastNnote);
+        if (notes.containsKey(name)) {
+            System.out.print("Enter new content: ");
+            String newContent = scanner.nextLine();
 
-        scanner.close();
-
-
-
+            notes.put(name, newContent);
+            System.out.println("Note updated.");
+        } else {
+            System.out.println("Error: Note not found");
+        }
+      
     }
 }
